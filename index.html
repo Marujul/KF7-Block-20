@@ -417,6 +417,112 @@
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
 
+        /* Pengganti Flashcard - Matching Game */
+        #matching-game {
+            text-align: center;
+        }
+
+        .game-instructions {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .word-column, .meaning-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .word-item, .meaning-item {
+            background: var(--white);
+            padding: 1.2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .word-item:hover, .meaning-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .word-item.selected {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .meaning-item.selected {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .word-item.matched, .meaning-item.matched {
+            background: var(--success);
+            color: white;
+            cursor: default;
+            transform: scale(0.95);
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .game-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
         /* Feedback */
         .feedback {
             position: fixed;
@@ -502,6 +608,8 @@
             .section-title { font-size: 1.5rem; }
             .quiz-header { flex-direction: column; align-items: center; }
             .feature-grid { grid-template-columns: 1fr; }
+            .matching-container { grid-template-columns: 1fr; }
+            .game-stats { flex-direction: column; gap: 1rem; }
         }
 
         @media (max-width: 480px) {
@@ -522,6 +630,7 @@
     <nav>
         <button class="nav-btn active" onclick="showSection('intro')">🏠 Beranda</button>
         <button class="nav-btn" onclick="showSection('materi')">📘 Materi</button>
+        <button class="nav-btn" onclick="showSection('matching-game')">🎮 Game Mencocokkan</button>
         <button class="nav-btn" onclick="showSection('latihan')">📝 Latihan Soal</button>
     </nav>
 
@@ -537,6 +646,10 @@
             <div class="feature-card">
                 <h3>📘 Materi</h3>
                 <p>Melihat daftar lengkap kosakata, romaji, arti, dan pola kalimat bahasa Jepang.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎮 Game Mencocokkan</h3>
+                <p>Uji ingatan Anda dengan mencocokkan kosakata Jepang dengan artinya dalam bahasa Indonesia.</p>
             </div>
             <div class="feature-card">
                 <h3>📝 Latihan Soal</h3>
@@ -688,6 +801,43 @@
         </div>
     </section>
 
+    <section id="matching-game">
+        <h2 class="section-title">🎮 Game Mencocokkan</h2>
+        
+        <div class="game-instructions">
+            <p><strong>Cara Bermain:</strong> Pilih satu kata dalam bahasa Jepang di kolom kiri, kemudian pilih artinya dalam bahasa Indonesia di kolom kanan. Jika cocok, kedua kata akan berubah warna. Coba cocokkan semua pasangan dengan sesedikit mungkin kesalahan!</p>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-item">
+                <div class="stat-value" id="matched-count">0</div>
+                <div>Terpasang</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-count">12</div>
+                <div>Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="attempts-count">0</div>
+                <div>Percobaan</div>
+            </div>
+        </div>
+
+        <div class="matching-container">
+            <div class="word-column" id="word-column">
+                <!-- Kosakata Jepang akan diisi JavaScript -->
+            </div>
+            <div class="meaning-column" id="meaning-column">
+                <!-- Arti dalam bahasa Indonesia akan diisi JavaScript -->
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button class="game-btn" id="reset-game">🔄 Mulai Ulang</button>
+            <button class="game-btn" id="hint-game">💡 Bantuan</button>
+        </div>
+    </section>
+
     <section id="latihan">
         <h2 class="section-title">🧠 Latihan Soal Pilihan Ganda</h2>
         
@@ -783,7 +933,7 @@
 
     <div class="keyboard-shortcuts">
         <strong>Keyboard Shortcuts:</strong><br>
-        1-3 (menu navigasi)<br>
+        1-4 (menu navigasi)<br>
         ? (tampilkan/sembunyikan bantuan)
     </div>
 
@@ -804,9 +954,11 @@
             { jp: "ねます", romaji: "nemasu", arti: "Tidur" }
         ];
 
-        // Variabel Global
-        let quizStartTime;
-        let quizTimer;
+        // Variabel Global untuk Game Mencocokkan
+        let selectedWord = null;
+        let selectedMeaning = null;
+        let matchedPairs = 0;
+        let attempts = 0;
 
         // Fungsi Navigasi
         function showSection(sectionId) {
@@ -846,6 +998,175 @@
                 </tr>`;
                 tableBody.innerHTML += row;
             });
+        }
+
+        // Fungsi Game Mencocokkan
+        function initializeMatchingGame() {
+            const wordColumn = document.getElementById('word-column');
+            const meaningColumn = document.getElementById('meaning-column');
+            
+            // Kosongkan kolom
+            wordColumn.innerHTML = '';
+            meaningColumn.innerHTML = '';
+            
+            // Reset variabel
+            selectedWord = null;
+            selectedMeaning = null;
+            matchedPairs = 0;
+            attempts = 0;
+            
+            // Update statistik
+            document.getElementById('matched-count').textContent = '0';
+            document.getElementById('attempts-count').textContent = '0';
+            document.getElementById('total-count').textContent = vocabulary.length.toString();
+            
+            // Acak urutan vocabulary
+            const shuffledVocabulary = [...vocabulary].sort(() => Math.random() - 0.5);
+            
+            // Buat elemen untuk kata-kata Jepang
+            shuffledVocabulary.forEach((item, index) => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-item';
+                wordElement.textContent = item.jp;
+                wordElement.dataset.index = index;
+                wordElement.addEventListener('click', selectWord);
+                wordColumn.appendChild(wordElement);
+            });
+            
+            // Buat elemen untuk arti (acak urutannya)
+            const shuffledMeanings = [...shuffledVocabulary]
+                .sort(() => Math.random() - 0.5)
+                .map(item => item.arti);
+                
+            shuffledMeanings.forEach((meaning, index) => {
+                const meaningElement = document.createElement('div');
+                meaningElement.className = 'meaning-item';
+                meaningElement.textContent = meaning;
+                meaningElement.dataset.index = index;
+                meaningElement.addEventListener('click', selectMeaning);
+                meaningColumn.appendChild(meaningElement);
+            });
+        }
+
+        function selectWord(event) {
+            const wordElement = event.target;
+            
+            // Jika sudah dipasangkan, abaikan
+            if (wordElement.classList.contains('matched')) return;
+            
+            // Hapus seleksi sebelumnya
+            document.querySelectorAll('.word-item.selected').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Tandai yang dipilih
+            wordElement.classList.add('selected');
+            selectedWord = wordElement;
+            
+            // Cek apakah sudah memilih keduanya
+            checkMatch();
+        }
+
+        function selectMeaning(event) {
+            const meaningElement = event.target;
+            
+            // Jika sudah dipasangkan, abaikan
+            if (meaningElement.classList.contains('matched')) return;
+            
+            // Hapus seleksi sebelumnya
+            document.querySelectorAll('.meaning-item.selected').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Tandai yang dipilih
+            meaningElement.classList.add('selected');
+            selectedMeaning = meaningElement;
+            
+            // Cek apakah sudah memilih keduanya
+            checkMatch();
+        }
+
+        function checkMatch() {
+            if (selectedWord && selectedMeaning) {
+                attempts++;
+                document.getElementById('attempts-count').textContent = attempts.toString();
+                
+                // Cari kata yang sesuai dengan arti yang dipilih
+                const wordIndex = parseInt(selectedWord.dataset.index);
+                const wordText = selectedWord.textContent;
+                const meaningText = selectedMeaning.textContent;
+                
+                // Cari item vocabulary yang sesuai
+                const wordItem = vocabulary.find(item => item.jp === wordText);
+                
+                if (wordItem && wordItem.arti === meaningText) {
+                    // Cocok
+                    selectedWord.classList.remove('selected');
+                    selectedWord.classList.add('matched');
+                    selectedMeaning.classList.remove('selected');
+                    selectedMeaning.classList.add('matched');
+                    
+                    matchedPairs++;
+                    document.getElementById('matched-count').textContent = matchedPairs.toString();
+                    
+                    // Tampilkan feedback
+                    showFeedback('success', 'Benar! 🎉');
+                    
+                    // Reset seleksi
+                    selectedWord = null;
+                    selectedMeaning = null;
+                    
+                    // Cek apakah sudah selesai
+                    if (matchedPairs === vocabulary.length) {
+                        setTimeout(() => {
+                            alert(`Selamat! Anda berhasil menyelesaikan game dengan ${attempts} percobaan!`);
+                        }, 500);
+                    }
+                } else {
+                    // Tidak cocok
+                    showFeedback('error', 'Salah, coba lagi!');
+                    
+                    // Reset seleksi setelah delay
+                    setTimeout(() => {
+                        selectedWord.classList.remove('selected');
+                        selectedMeaning.classList.remove('selected');
+                        selectedWord = null;
+                        selectedMeaning = null;
+                    }, 1000);
+                }
+            }
+        }
+
+        function giveHint() {
+            // Cari pasangan yang belum terpasang
+            const unmatchedWords = document.querySelectorAll('.word-item:not(.matched)');
+            const unmatchedMeanings = document.querySelectorAll('.meaning-item:not(.matched)');
+            
+            if (unmatchedWords.length > 0 && unmatchedMeanings.length > 0) {
+                // Pilih kata acak yang belum terpasang
+                const randomWord = unmatchedWords[Math.floor(Math.random() * unmatchedWords.length)];
+                const wordText = randomWord.textContent;
+                
+                // Cari arti yang sesuai
+                const wordItem = vocabulary.find(item => item.jp === wordText);
+                if (wordItem) {
+                    // Cari elemen arti yang sesuai
+                    const correctMeaning = Array.from(unmatchedMeanings).find(
+                        meaning => meaning.textContent === wordItem.arti
+                    );
+                    
+                    if (correctMeaning) {
+                        // Beri highlight sementara
+                        randomWord.style.backgroundColor = '#ffeb3b';
+                        correctMeaning.style.backgroundColor = '#ffeb3b';
+                        
+                        setTimeout(() => {
+                            randomWord.style.backgroundColor = '';
+                            correctMeaning.style.backgroundColor = '';
+                        }, 2000);
+                    }
+                }
+            }
         }
 
         // Fungsi Quiz
@@ -990,8 +1311,8 @@
         // Navigasi Keyboard
         document.addEventListener('keydown', (e) => {
             // Tombol angka untuk navigasi
-            if (['1', '2', '3'].includes(e.key)) {
-                const sections = ['intro', 'materi', 'latihan'];
+            if (['1', '2', '3', '4'].includes(e.key)) {
+                const sections = ['intro', 'materi', 'matching-game', 'latihan'];
                 showSection(sections[parseInt(e.key) - 1]);
             }
 
@@ -1005,6 +1326,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Isi konten
             populateMateriTable();
+            
+            // Inisialisasi game mencocokkan
+            initializeMatchingGame();
+            
+            // Event listener untuk tombol game
+            document.getElementById('reset-game').addEventListener('click', initializeMatchingGame);
+            document.getElementById('hint-game').addEventListener('click', giveHint);
             
             // Event listener untuk tombol quiz
             document.getElementById('submitButton').addEventListener('click', checkAnswers);
