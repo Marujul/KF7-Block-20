@@ -1,362 +1,580 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>まいにちのせいかつ - Kehidupan Sehari-hari</title>
-<style>
-:root {
-    --primary: #f4b183;
-    --primary-dark: #e38d59;
-    --secondary: #fdebd0;
-    --accent: #d2691e;
-    --light: #fff3e6;
-    --text: #333;
-    --white: #fff;
-}
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #fdfaf6 0%, #f5f0e8 100%);
-    color: var(--text);
-    line-height: 1.6;
-    min-height: 100vh;
-}
-header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--white);
-    text-align: center;
-    padding: 1.5rem 0;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-header h1 {
-    margin: 0;
-    font-size: 2.2rem;
-    font-weight: 700;
-}
-header p {
-    margin: 0.5rem 0 0;
-    font-size: 1.1rem;
-    opacity: 0.9;
-}
-nav {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1.5rem 1rem;
-}
-.nav-btn {
-    background: var(--white);
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.nav-btn:hover, .nav-btn.active {
-    background: var(--primary);
-    color: var(--white);
-    transform: translateY(-2px);
-}
-section {
-    display: none;
-    padding: 2rem 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.visible {
-    display: block;
-    animation: fadeIn 0.5s ease;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>まいにちのせいかつ - Kehidupan Sehari-hari</title>
+    <style>
+        :root {
+            --primary: #f4b183;
+            --primary-dark: #e38d59;
+            --secondary: #fdebd0;
+            --accent: #d2691e;
+            --light: #fff3e6;
+            --text: #333;
+            --white: #fff;
+        }
 
-/* ---------- FLASHCARD FIX ---------- */
-.flashcard-container {
-    perspective: 1000px;
-    margin: 2rem auto;
-    width: 320px;
-    height: 200px;
-}
-.flashcard {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
-    cursor: pointer;
-}
-.flashcard.flipped {
-    transform: rotateY(180deg);
-}
-.flashcard-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    padding: 1.5rem;
-    text-align: center;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-/* tambahan penting agar flip bekerja */
-.flashcard-front {
-    background: linear-gradient(135deg, var(--light) 0%, var(--secondary) 100%);
-    color: var(--accent);
-    transform: rotateY(0deg);
-}
-.flashcard-back {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--white);
-    transform: rotateY(180deg);
-}
-.flashcard-romaji {
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 0.5rem;
-}
-.flashcard-example {
-    font-size: 0.8rem;
-    margin-top: 1rem;
-    font-style: italic;
-    opacity: 0.8;
-}
-.flashcard-nav {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin: 1.5rem 0;
-}
-.flashcard-btn {
-    background: var(--primary);
-    color: var(--white);
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 50px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.flashcard-btn:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-}
-.card-counter {
-    font-size: 1.1rem;
-    color: #666;
-    margin-top: 1rem;
-}
-@media (max-width: 768px) {
-    .flashcard-container { width: 280px; height: 180px; }
-}
-/* ----------------------------------- */
-.section-title {
-    text-align: center;
-    color: var(--accent);
-    margin-bottom: 2rem;
-    position: relative;
-    font-size: 1.8rem;
-}
-.section-title::after {
-    content: "";
-    display: block;
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
-    margin: 0.5rem auto;
-    border-radius: 2px;
-}
-.welcome-card {
-    background: linear-gradient(135deg, var(--light) 0%, var(--secondary) 100%);
-    padding: 2rem;
-    border-radius: 12px;
-    margin-bottom: 2rem;
-    border-left: 5px solid var(--primary);
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-.feature-card {
-    background: var(--white);
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
-}
-.feature-card:hover { transform: translateY(-5px); }
-.vocab-table-container {
-    overflow-x: auto;
-    margin: 0 auto 3rem;
-    max-width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--white);
-    border-radius: 10px;
-    overflow: hidden;
-}
-th, td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-th {
-    background: var(--primary);
-    color: var(--white);
-    font-weight: 600;
-}
-.pattern-card {
-    background: var(--white);
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    border-left: 4px solid var(--primary);
-}
-.example {
-    background: var(--light);
-    padding: 1rem;
-    border-radius: 8px;
-    margin: 1rem 0;
-}
-.japanese {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--accent);
-}
-</style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdfaf6 0%, #f5f0e8 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 1rem;
+        }
+
+        .nav-btn {
+            background: var(--white);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        section {
+            display: none;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            position: relative;
+            font-size: 1.8rem;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+
+        /* Flashcard Section - SOLUSI YANG BERFUNGSI */
+        .flashcard-container {
+            perspective: 1000px;
+            margin: 2rem auto;
+            width: 320px;
+            height: 200px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .flashcard-front {
+            background: linear-gradient(135deg, var(--light) 0%, var(--secondary) 100%);
+            color: var(--accent);
+        }
+
+        .flashcard-back {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-romaji {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .flashcard-example {
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .flashcard-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .flashcard-btn {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .flashcard-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .card-counter {
+            font-size: 1.1rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        /* Gaya untuk bagian lainnya */
+        .welcome-card {
+            background: linear-gradient(135deg, var(--light) 0%, var(--secondary) 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--primary);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .vocab-table-container {
+            overflow-x: auto;
+            margin: 0 auto 3rem;
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: var(--primary);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .pattern-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--primary);
+        }
+
+        .example {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .japanese {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .keyboard-shortcuts {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .keyboard-shortcuts.visible {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .flashcard-container { width: 280px; height: 180px; }
+        }
+    </style>
 </head>
 <body>
-<header>
-    <h1>まいにちのせいかつ</h1>
-    <p>Kehidupan Sehari-hari – Belajar Bahasa Jepang</p>
-</header>
+    <header>
+        <h1>まいにちのせいかつ</h1>
+        <p>Kehidupan Sehari-hari – Belajar Bahasa Jepang</p>
+    </header>
 
-<nav>
-    <button class="nav-btn active" data-section="intro">🏠 Beranda</button>
-    <button class="nav-btn" data-section="materi">📘 Materi</button>
-    <button class="nav-btn" data-section="flashcard">📇 Flashcard</button>
-</nav>
+    <nav>
+        <button class="nav-btn active" onclick="showSection('intro')">🏠 Beranda</button>
+        <button class="nav-btn" onclick="showSection('materi')">📘 Materi</button>
+        <button class="nav-btn" onclick="showSection('flashcard')">📇 Flashcard</button>
+        <button class="nav-btn" onclick="showSection('latihan')">📝 Latihan Soal</button>
+    </nav>
 
-<section id="intro" class="visible">
-    <h2 class="section-title">Selamat Datang! (ようこそ！)</h2>
-    <div class="welcome-card">
-        <p>Halaman ini membantu Anda mempelajari kosakata bahasa Jepang dasar yang berkaitan dengan "Kehidupan Sehari-hari" (まいにちのせいかつ).</p>
-        <p>Pilih salah satu bagian untuk memulai. がんばってください！</p>
-    </div>
-</section>
+    <section id="intro" class="visible">
+        <h2 class="section-title">Selamat Datang! (ようこそ！)</h2>
+        
+        <div class="welcome-card">
+            <p>Halaman ini dirancang untuk membantu Anda mempelajari kosakata bahasa Jepang dasar yang berkaitan dengan "Kehidupan Sehari-hari" (まいにちのせいかつ).</p>
+            <p>Pilih salah satu bagian untuk memulai. がんばってください！ (Ganbatte kudasai! - Semangat!)</p>
+        </div>
 
-<section id="materi">
-    <h2 class="section-title">📖 Kosakata</h2>
-    <div class="vocab-table-container">
-        <table>
-            <thead><tr><th>日本語</th><th>Romaji</th><th>Arti</th></tr></thead>
-            <tbody id="materi-body"></tbody>
-        </table>
-    </div>
-</section>
-
-<section id="flashcard">
-    <h2 class="section-title">📇 Flashcard</h2>
-    <div class="flashcard-container">
-        <div class="flashcard" id="flashcard">
-            <div class="flashcard-face flashcard-front">
-                <span id="flashcard-jp"></span>
-                <span id="flashcard-romaji" class="flashcard-romaji"></span>
-                <div id="flashcard-example" class="flashcard-example"></div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>📘 Materi</h3>
+                <p>Melihat daftar lengkap kosakata, romaji, arti, dan pola kalimat bahasa Jepang.</p>
             </div>
-            <div class="flashcard-face flashcard-back">
-                <span id="flashcard-arti"></span>
+            <div class="feature-card">
+                <h3>📇 Flashcard</h3>
+                <p>Menguji ingatan Anda dengan kartu bolak-balik interaktif yang dapat diklik.</p>
+            </div>
+            <div class="feature-card">
+                <h3>📝 Latihan Soal</h3>
+                <p>Mengerjakan kuis pilihan ganda untuk mengukur pemahaman Anda.</p>
             </div>
         </div>
+    </section>
+
+    <section id="materi">
+        <h2 class="section-title">📖 Kosakata Kegiatan Sehari-hari</h2>
+        
+        <div class="vocab-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>日本語</th>
+                        <th>Romaji</th>
+                        <th>Arti</th>
+                    </tr>
+                </thead>
+                <tbody id="materi-body">
+                    <!-- Data akan diisi JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grammar-patterns">
+            <h2 class="section-title">📚 Pola Kalimat</h2>
+            
+            <div class="pattern-card">
+                <h3>Pola: Subjek + Partikel + Kata Kerja (-masu)</h3>
+                <div class="example">
+                    <div class="japanese">わたしは がっこうへ いきます。</div>
+                    <div class="romaji">Watashi wa gakkō e ikimasu.</div>
+                    <div>Arti: Saya pergi ke sekolah.</div>
+                </div>
+            </div>
+            
+            <div class="pattern-card">
+                <h3>Pola: Waktu + Partikel + Kegiatan</h3>
+                <div class="example">
+                    <div class="japanese">あさ 7じに おきます。</div>
+                    <div class="romaji">Asa shichi-ji ni okimasu.</div>
+                    <div>Arti: Saya bangun tidur jam 7 pagi.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="flashcard">
+        <h2 class="section-title">📇 Flashcard</h2>
+        <p>Klik kartu untuk membalik, gunakan tombol atau panah kiri/kanan untuk navigasi</p>
+        
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="flashcard-face flashcard-front">
+                    <span id="flashcard-jp"></span>
+                    <span id="flashcard-romaji" class="flashcard-romaji"></span>
+                    <div id="flashcard-example" class="flashcard-example"></div>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <span id="flashcard-arti"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flashcard-nav">
+            <button class="flashcard-btn" onclick="prevCard()">← Sebelumnya</button>
+            <button class="flashcard-btn" onclick="nextCard()">Berikutnya →</button>
+        </div>
+        <p class="card-counter" id="card-counter"></p>
+    </section>
+
+    <section id="latihan">
+        <h2 class="section-title">🧠 Latihan Soal Pilihan Ganda</h2>
+        
+        <div class="quiz-header">
+            <div id="quiz-timer">Waktu: 0:00</div>
+        </div>
+
+        <form id="quizForm">
+            <div class="question" data-id="1">
+                <p>1. おきます</p>
+                <label><input type="radio" name="q1" value="a"> a. Tidur</label>
+                <label><input type="radio" name="q1" value="b"> b. Bangun tidur</label>
+                <label><input type="radio" name="q1" value="c"> c. Belajar</label>
+            </div>
+
+            <div class="question" data-id="2">
+                <p>2. はをみがきます</p>
+                <label><input type="radio" name="q2" value="a"> a. Menggosok gigi</label>
+                <label><input type="radio" name="q2" value="b"> b. Makan pagi</label>
+                <label><input type="radio" name="q2" value="c"> c. Pergi ke sekolah</label>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="quiz-btn" id="submitButton">Lihat Nilai</button>
+                <button type="button" class="quiz-btn" id="resetButton">Coba Lagi</button>
+            </div>
+        </form>
+
+        <div id="score" aria-live="polite"></div>
+    </section>
+
+    <div class="keyboard-shortcuts">
+        <strong>Keyboard Shortcuts:</strong><br>
+        ← → (navigasi flashcard)<br>
+        Spasi (balik kartu)<br>
+        1-4 (menu navigasi)<br>
+        ? (tampilkan/sembunyikan bantuan)
     </div>
-    <div class="flashcard-nav">
-        <button class="flashcard-btn" id="prevCard">← Sebelumnya</button>
-        <button class="flashcard-btn" id="nextCard">Berikutnya →</button>
-    </div>
-    <p class="card-counter" id="card-counter"></p>
-</section>
 
-<script>
-// Data kosakata
-const vocabulary = [
-    { jp: "おきます", romaji: "okimasu", arti: "Bangun tidur", example: "あさ 7じに おきます。" },
-    { jp: "はをみがきます", romaji: "ha o migakimasu", arti: "Menggosok gigi", example: "あさごはんの まえに はを みがきます。" },
-    { jp: "かおをあらいます", romaji: "kao o araimasu", arti: "Mencuci muka", example: "おきたあとで かおを あらいます。" },
-    { jp: "あさごはんをたべます", romaji: "asagohan o tabemasu", arti: "Makan pagi", example: "あさごはんを たべてから がっこうへ いきます。" },
-    { jp: "がっこうへいきます", romaji: "gakkō e ikimasu", arti: "Pergi ke sekolah", example: "8じに がっこうへ いきます。" }
-];
+    <script>
+        // Data Kosakata
+        const vocabulary = [
+            { jp: "おきます", romaji: "okimasu", arti: "Bangun tidur", example: "あさ 7じに おきます。" },
+            { jp: "はをみがきます", romaji: "ha o migakimasu", arti: "Menggosok gigi", example: "あさごはんの まえに はを みがきます。" },
+            { jp: "かおをあらいます", romaji: "kao o araimasu", arti: "Mencuci muka", example: "おきたあとで かおを あらいます。" },
+            { jp: "あさごはんをたべます", romaji: "asagohan o tabemasu", arti: "Makan pagi", example: "あさごはんを たべてから がっこうへ いきます。" },
+            { jp: "がっこうへいきます", romaji: "gakkō e ikimasu", arti: "Pergi ke sekolah", example: "8じに がっこうへ いきます。" }
+        ];
 
-let currentCardIndex = 0;
+        // Variabel Global
+        let currentCardIndex = 0;
 
-function showFlashcard(index) {
-    const card = vocabulary[index];
-    document.getElementById('flashcard-jp').textContent = card.jp;
-    document.getElementById('flashcard-romaji').textContent = card.romaji;
-    document.getElementById('flashcard-arti').textContent = card.arti;
-    document.getElementById('flashcard-example').textContent = card.example;
-    document.getElementById('card-counter').textContent = `${index + 1} / ${vocabulary.length}`;
-    document.getElementById('flashcard').classList.remove('flipped');
-}
-function nextCard() {
-    currentCardIndex = (currentCardIndex + 1) % vocabulary.length;
-    showFlashcard(currentCardIndex);
-}
-function prevCard() {
-    currentCardIndex = (currentCardIndex - 1 + vocabulary.length) % vocabulary.length;
-    showFlashcard(currentCardIndex);
-}
-function flipCard() {
-    document.getElementById('flashcard').classList.toggle('flipped');
-}
-function populateMateriTable() {
-    const tableBody = document.getElementById('materi-body');
-    vocabulary.forEach(item => {
-        tableBody.innerHTML += `<tr><td>${item.jp}</td><td>${item.romaji}</td><td>${item.arti}</td></tr>`;
-    });
-}
-function showSection(sectionId) {
-    document.querySelectorAll('section').forEach(s => s.classList.remove('visible'));
-    document.getElementById(sectionId).classList.add('visible');
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-section') === sectionId);
-    });
-}
+        // Fungsi Navigasi
+        function showSection(sectionId) {
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('visible');
+            });
+            
+            document.getElementById(sectionId).classList.add('visible');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Aktifkan tombol navigasi yang sesuai
+            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(
+                btn => btn.getAttribute('onclick') === `showSection('${sectionId}')`
+            );
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+        }
 
-document.addEventListener('DOMContentLoaded', () => {
-    populateMateriTable();
-    showFlashcard(currentCardIndex);
-    document.getElementById('flashcard').addEventListener('click', flipCard);
-    document.getElementById('nextCard').addEventListener('click', nextCard);
-    document.getElementById('prevCard').addEventListener('click', prevCard);
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', () => showSection(btn.getAttribute('data-section')));
-    });
-});
-</script>
+        // Fungsi Flashcard - SOLUSI YANG BERFUNGSI
+        function showFlashcard(index) {
+            const card = vocabulary[index];
+            document.getElementById('flashcard-jp').textContent = card.jp;
+            document.getElementById('flashcard-romaji').textContent = card.romaji;
+            document.getElementById('flashcard-arti').textContent = card.arti;
+            document.getElementById('card-counter').textContent = `${index + 1} / ${vocabulary.length}`;
+            
+            // Reset kartu ke posisi depan saat berpindah kartu
+            document.getElementById('flashcard').classList.remove('flipped');
+            
+            // Tambahkan contoh kalimat
+            document.getElementById('flashcard-example').textContent = card.example;
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % vocabulary.length;
+            showFlashcard(currentCardIndex);
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + vocabulary.length) % vocabulary.length;
+            showFlashcard(currentCardIndex);
+        }
+
+        // Fungsi untuk membalik flashcard
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        // Fungsi Materi
+        function populateMateriTable() {
+            const tableBody = document.getElementById('materi-body');
+            vocabulary.forEach(item => {
+                const row = `<tr>
+                    <td>${item.jp}</td>
+                    <td>${item.romaji}</td>
+                    <td>${item.arti}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        // Inisialisasi Halaman
+        document.addEventListener('DOMContentLoaded', function() {
+            // Isi konten
+            populateMateriTable();
+            
+            // Inisialisasi flashcard - SOLUSI YANG BERFUNGSI
+            const flashcardElement = document.getElementById('flashcard');
+            
+            // Event listener untuk klik pada flashcard
+            flashcardElement.addEventListener('click', flipCard);
+            
+            // Event listener untuk keyboard
+            document.addEventListener('keydown', function(e) {
+                const currentSection = document.querySelector('section.visible').id;
+                
+                if (currentSection === 'flashcard') {
+                    if (e.key === ' ') {
+                        flipCard();
+                        e.preventDefault();
+                    } else if (e.key === 'ArrowLeft') {
+                        prevCard();
+                    } else if (e.key === 'ArrowRight') {
+                        nextCard();
+                    }
+                }
+                
+                // Tombol angka untuk navigasi
+                if (['1', '2', '3', '4'].includes(e.key)) {
+                    const sections = ['intro', 'materi', 'flashcard', 'latihan'];
+                    showSection(sections[parseInt(e.key) - 1]);
+                }
+
+                // Tampilkan/sembunyikan shortcut keyboard
+                if (e.key === '?') {
+                    document.querySelector('.keyboard-shortcuts').classList.toggle('visible');
+                }
+            });
+
+            // Tampilkan kartu pertama
+            showFlashcard(currentCardIndex);
+            
+            // Event listener untuk tombol quiz
+            document.getElementById('submitButton').addEventListener('click', function() {
+                alert('Fitur kuis akan diimplementasikan nanti');
+            });
+            
+            // Tampilkan shortcut keyboard sebentar
+            setTimeout(function() {
+                document.querySelector('.keyboard-shortcuts').classList.add('visible');
+                setTimeout(function() {
+                    document.querySelector('.keyboard-shortcuts').classList.remove('visible');
+                }, 5000);
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
