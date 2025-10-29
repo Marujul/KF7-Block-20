@@ -271,7 +271,7 @@
             color: var(--primary);
         }
 
-        /* Flashcard Section */
+        /* Flashcard Section - PERBAIKAN */
         .flashcard-container {
             perspective: 1000px;
             margin: 2rem auto;
@@ -943,7 +943,7 @@
             }
         }
 
-        // Fungsi Flashcard
+        // Fungsi Flashcard - PERBAIKAN
         function showFlashcard(index) {
             const card = vocabulary[index];
             document.getElementById('flashcard-jp').textContent = card.jp;
@@ -966,6 +966,11 @@
         function prevCard() {
             currentCardIndex = (currentCardIndex - 1 + vocabulary.length) % vocabulary.length;
             showFlashcard(currentCardIndex);
+        }
+
+        // Fungsi untuk membalik flashcard
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
         }
 
         // Fungsi Materi
@@ -1133,7 +1138,7 @@
                         nextCard();
                         break;
                     case ' ':
-                        document.getElementById('flashcard').classList.toggle('flipped');
+                        flipCard();
                         e.preventDefault();
                         break;
                 }
@@ -1156,12 +1161,10 @@
             // Isi konten
             populateMateriTable();
             
-            // Inisialisasi flashcard
+            // Inisialisasi flashcard - PERBAIKAN
             const flashcard = document.getElementById('flashcard');
             if (flashcard) {
-                flashcard.addEventListener('click', function() {
-                    this.classList.toggle('flipped');
-                });
+                flashcard.addEventListener('click', flipCard);
             }
 
             // Tampilkan kartu pertama
